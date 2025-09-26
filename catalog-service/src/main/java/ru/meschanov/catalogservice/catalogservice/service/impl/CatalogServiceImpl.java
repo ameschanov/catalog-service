@@ -45,7 +45,7 @@ public class CatalogServiceImpl implements CatalogService {
     @Cacheable(value = "products", key = "#categoryId")
     public List<ProductDto> getProductsByCategory(Long categoryId) {
         return productRepository.findByCategoryId(categoryId).stream()
-                .map(p -> new ProductDto(p.getId(), p.getName(), p.getPrice(), p.getCategory().getId()))
+                .map(p -> new ProductDto(p.getId(), p.getName(), p.getPrice(), p.getCategory().getId(), p.getQuantityStock()))
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class CatalogServiceImpl implements CatalogService {
                 .price(dto.getPrice())
                 .category(category)
                 .build());
-        return new ProductDto(product.getId(), product.getName(), product.getPrice(), category.getId());
+        return new ProductDto(product.getId(), product.getName(), product.getPrice(), category.getId(), product.getQuantityStock());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class CatalogServiceImpl implements CatalogService {
     public ProductDto getProductById(Long productId) {
         if (productId != null) {
             return productRepository.findById(productId)
-                    .map(p -> new ProductDto(p.getId(), p.getName(), p.getPrice(), p.getCategory().getId()))
+                    .map(p -> new ProductDto(p.getId(), p.getName(), p.getPrice(), p.getCategory().getId(), p.getQuantityStock()))
                     .orElseThrow(() -> new NotFoundException("Product not found"));
         } else {
             throw new ValidationException("Product ID is null");

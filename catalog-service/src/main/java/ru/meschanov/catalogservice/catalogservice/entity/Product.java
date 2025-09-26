@@ -25,6 +25,9 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @Column(name = "quantity_stock", nullable = false)
+    private Integer quantityStock;
+
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
